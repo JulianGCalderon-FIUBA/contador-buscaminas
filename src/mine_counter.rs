@@ -3,7 +3,7 @@
 pub mod input_error;
 
 use input_error::InputError;
-use std::{char, fmt};
+use std::{char, fmt, fs, io};
 
 const MINE: char = '*';
 const BLANK: char = '.';
@@ -31,7 +31,7 @@ impl MineCounter {
     }
 
     fn new_from_file(file_name: &str) -> Result<Self, InputError> {
-        let file_content = std::fs::read_to_string(file_name)?;
+        let file_content = fs::read_to_string(file_name)?;
         let board = Self::to_matrix(&file_content);
         Self::assert_is_valid_board(&board)?;
 
@@ -47,16 +47,12 @@ impl MineCounter {
 
     /// Imprime por pantalla el tablero modificado
     pub fn display(&self) {
-        for row in self.board.iter() {
-            for char in row {
-                print!(" {} ", char);
-            }
-            println!();
-        }
+        print!("{}", self);
     }
+
     /// Guarda en un archivo el tablero modificado
-    pub fn to_file(&self) {
-        todo!()
+    pub fn to_file(&self, file_name: &str) -> io::Result<()> {
+        fs::write(file_name, self.to_string())
     }
 
     fn count(&mut self) {
