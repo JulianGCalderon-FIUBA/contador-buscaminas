@@ -120,6 +120,7 @@ impl MineCounter {
     }
 }
 
+/// Escribe el tablero modificado en el formatter indicado
 impl fmt::Display for MineCounter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for row in self.board.iter() {
