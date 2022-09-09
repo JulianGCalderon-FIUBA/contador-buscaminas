@@ -1,5 +1,5 @@
-use buscaminas_v2::mine_counter::input_error::InputError;
-use buscaminas_v2::mine_counter::MineCounter;
+use buscaminas::mine_counter::input_error::InputError;
+use buscaminas::mine_counter::MineCounter;
 
 #[test]
 fn valid_board_displays_correctly() {
