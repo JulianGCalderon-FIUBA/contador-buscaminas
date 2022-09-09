@@ -32,8 +32,8 @@ impl CountMines {
 
     fn new_from_file(file_name: &str) -> Result<Self, InputError> {
         let file_content = std::fs::read_to_string(file_name)?;
-        let board = to_matrix(&file_content);
-        assert_is_valid_board(&board)?;
+        let board = Self::to_matrix(&file_content);
+        Self::assert_is_valid_board(&board)?;
 
         let width = board[0].len();
         let height = board.len();
@@ -84,37 +84,36 @@ impl CountMines {
 
         counter
     }
-}
+    fn assert_is_valid_board(board: &[Vec<char>]) -> Result<(), InputError> {
+        if board.is_empty() {
+            return Err(InputError::EmptyBoard);
+        }
 
-fn assert_is_valid_board(board: &[Vec<char>]) -> Result<(), InputError> {
-    if board.is_empty() {
-        return Err(InputError::EmptyBoard);
-    }
-
-    for row in board.iter() {
-        for &char in row {
-            if char != MINE && char != BLANK {
-                return Err(InputError::InvalidCharacter);
+        for row in board.iter() {
+            for &char in row {
+                if char != MINE && char != BLANK {
+                    return Err(InputError::InvalidCharacter);
+                }
+            }
+            if row.len() != board[0].len() {
+                return Err(InputError::InvalidBoard);
             }
         }
-        if row.len() != board[0].len() {
-            return Err(InputError::InvalidBoard);
+
+        Ok(())
+    }
+
+    fn to_matrix(board: &str) -> Vec<Vec<char>> {
+        let mut matrix: Vec<Vec<char>> = vec![];
+        let lines = board.lines();
+
+        for line in lines {
+            let chars: Vec<char> = line.chars().collect();
+            matrix.push(chars);
         }
+
+        matrix
     }
-
-    Ok(())
-}
-
-fn to_matrix(board: &str) -> Vec<Vec<char>> {
-    let mut matrix: Vec<Vec<char>> = vec![];
-    let lines = board.lines();
-
-    for line in lines {
-        let chars: Vec<char> = line.chars().collect();
-        matrix.push(chars);
-    }
-
-    matrix
 }
 
 fn digit_to_char(digit: u8) -> char {
@@ -126,8 +125,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn to_matrix_square() {
-        let matrix = to_matrix(".*\n*.\n");
+    fn to_matrix_returns_correcly_with_square_board() {
+        let matrix = CountMines::to_matrix(".*\n*.\n");
 
         assert_eq!('.', matrix[0][0]);
         assert_eq!('*', matrix[0][1]);
@@ -136,8 +135,8 @@ mod tests {
     }
 
     #[test]
-    fn to_matrix_rectangular() {
-        let matrix = to_matrix(".*\n*.\n.*\n");
+    fn to_matrix_returns_correcly_with_rectangular_board() {
+        let matrix = CountMines::to_matrix(".*\n*.\n.*\n");
 
         assert_eq!('.', matrix[0][0]);
         assert_eq!('*', matrix[0][1]);
@@ -148,7 +147,7 @@ mod tests {
     }
 
     #[test]
-    fn adyacent_mines_test() {
+    fn adyacent_mines_returns_adyacent_mines_to_position_correctly() {
         let mine_counter = CountMines::new_from_file("boards/basic.txt").unwrap();
 
         assert_eq!(0, mine_counter.adyacents_mines_to(3, 0));
@@ -158,7 +157,7 @@ mod tests {
     }
 
     #[test]
-    fn count_test() {
+    fn count_updates_board_with_adyacent_mines_count_for_empty_positons() {
         let mut mine_counter = CountMines::new_from_file("boards/basic.txt").unwrap();
         mine_counter.count();
 
@@ -167,5 +166,38 @@ mod tests {
         assert_eq!('1', mine_counter.board[0][0]);
         assert_eq!('2', mine_counter.board[2][1]);
         assert_eq!('3', mine_counter.board[0][2]);
+    }
+
+    #[test]
+    fn assert_is_valid_with_invalid_character_returns_error() {
+        let board = vec![vec!['a', '.'], vec!['.', '*']];
+        assert!(matches!(
+            CountMines::assert_is_valid_board(&board),
+            Err(InputError::InvalidCharacter)
+        ));
+    }
+
+    #[test]
+    fn assert_is_valid_with_invalid_board_returns_error() {
+        let board = vec![vec!['*', '.', '.'], vec!['*', '.']];
+        assert!(matches!(
+            CountMines::assert_is_valid_board(&board),
+            Err(InputError::InvalidBoard)
+        ));
+    }
+
+    #[test]
+    fn assert_is_valid_with_empty_board_returns_errror() {
+        let board = vec![];
+        assert!(matches!(
+            CountMines::assert_is_valid_board(&board),
+            Err(InputError::EmptyBoard)
+        ));
+    }
+
+    #[test]
+    fn new_with_invalid_file_returns_error() {
+        let board = CountMines::new_from_file("NO/EXISTE.txt");
+        assert!(matches!(board, Err(InputError::InvalidFile)));
     }
 }
