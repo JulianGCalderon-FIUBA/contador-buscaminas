@@ -3,7 +3,7 @@
 pub mod input_error;
 
 use input_error::InputError;
-use std::char;
+use std::{char, fmt};
 
 const MINE: char = '*';
 const BLANK: char = '.';
@@ -113,6 +113,19 @@ impl CountMines {
         }
 
         matrix
+    }
+}
+
+impl fmt::Display for CountMines {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for row in self.board.iter() {
+            for &char in row {
+                write!(f, "{}", char)?;
+            }
+            writeln!(f)?;
+        }
+
+        Ok(())
     }
 }
 
