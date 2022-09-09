@@ -45,7 +45,7 @@ impl MineCounter {
         })
     }
 
-    /// Imprime por pantalla el tablero
+    /// Imprime por pantalla el tablero modificado
     pub fn display(&self) {
         for row in self.board.iter() {
             for char in row {
@@ -53,6 +53,10 @@ impl MineCounter {
             }
             println!();
         }
+    }
+    /// Guarda en un archivo el tablero modificado
+    pub fn to_file(&self) {
+        todo!()
     }
 
     fn count(&mut self) {

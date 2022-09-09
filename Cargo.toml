@@ -1,5 +1,5 @@
 [package]
-name = "buscaminas_v2"
+name = "buscaminas"
 version = "0.1.0"
 edition = "2021"
 

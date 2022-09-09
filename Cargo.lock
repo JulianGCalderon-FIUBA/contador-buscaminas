@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "buscaminas_v2"
+name = "buscaminas"
 version = "0.1.0"
