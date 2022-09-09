@@ -1,4 +1,4 @@
-//! Contiene el method object CountMines.
+//! Contiene el method object MineCounter.
 
 pub mod input_error;
 
@@ -10,13 +10,13 @@ const BLANK: char = '.';
 
 /// Cuenta las minas adyacentes a cada casilla vacia
 ///  a partir de un tablero proveniente de un archivo
-pub struct CountMines {
+pub struct MineCounter {
     board: Vec<Vec<char>>,
     width: usize,
     height: usize,
 }
 
-impl CountMines {
+impl MineCounter {
     /// Lee un tablero de un archivo y cuenta las minas adyacentes a cada casilla vacia.
     ///
     /// El archivo debe ser valido:
@@ -116,7 +116,7 @@ impl CountMines {
     }
 }
 
-impl fmt::Display for CountMines {
+impl fmt::Display for MineCounter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for row in self.board.iter() {
             for &char in row {
@@ -139,7 +139,7 @@ mod tests {
 
     #[test]
     fn to_matrix_returns_correcly_with_square_board() {
-        let matrix = CountMines::to_matrix(".*\n*.\n");
+        let matrix = MineCounter::to_matrix(".*\n*.\n");
 
         assert_eq!('.', matrix[0][0]);
         assert_eq!('*', matrix[0][1]);
@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     fn to_matrix_returns_correcly_with_rectangular_board() {
-        let matrix = CountMines::to_matrix(".*\n*.\n.*\n");
+        let matrix = MineCounter::to_matrix(".*\n*.\n.*\n");
 
         assert_eq!('.', matrix[0][0]);
         assert_eq!('*', matrix[0][1]);
@@ -161,7 +161,7 @@ mod tests {
 
     #[test]
     fn adyacent_mines_returns_adyacent_mines_to_position_correctly() {
-        let mine_counter = CountMines::new_from_file("boards/basic.txt").unwrap();
+        let mine_counter = MineCounter::new_from_file("boards/basic.txt").unwrap();
 
         assert_eq!(0, mine_counter.adyacents_mines_to(3, 0));
         assert_eq!(1, mine_counter.adyacents_mines_to(0, 0));
@@ -171,7 +171,7 @@ mod tests {
 
     #[test]
     fn count_updates_board_with_adyacent_mines_count_for_empty_positons() {
-        let mut mine_counter = CountMines::new_from_file("boards/basic.txt").unwrap();
+        let mut mine_counter = MineCounter::new_from_file("boards/basic.txt").unwrap();
         mine_counter.count();
 
         assert_eq!('.', mine_counter.board[3][0]);
@@ -185,7 +185,7 @@ mod tests {
     fn assert_is_valid_with_invalid_character_returns_error() {
         let board = vec![vec!['a', '.'], vec!['.', '*']];
         assert!(matches!(
-            CountMines::assert_is_valid_board(&board),
+            MineCounter::assert_is_valid_board(&board),
             Err(InputError::InvalidCharacter)
         ));
     }
@@ -194,7 +194,7 @@ mod tests {
     fn assert_is_valid_with_invalid_board_returns_error() {
         let board = vec![vec!['*', '.', '.'], vec!['*', '.']];
         assert!(matches!(
-            CountMines::assert_is_valid_board(&board),
+            MineCounter::assert_is_valid_board(&board),
             Err(InputError::InvalidBoard)
         ));
     }
@@ -203,14 +203,14 @@ mod tests {
     fn assert_is_valid_with_empty_board_returns_errror() {
         let board = vec![];
         assert!(matches!(
-            CountMines::assert_is_valid_board(&board),
+            MineCounter::assert_is_valid_board(&board),
             Err(InputError::EmptyBoard)
         ));
     }
 
     #[test]
     fn new_with_invalid_file_returns_error() {
-        let board = CountMines::new_from_file("NO/EXISTE.txt");
+        let board = MineCounter::new_from_file("NO/EXISTE.txt");
         assert!(matches!(board, Err(InputError::InvalidFile)));
     }
 }
