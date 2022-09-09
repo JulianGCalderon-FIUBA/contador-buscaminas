@@ -5,7 +5,7 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
-        return eprintln!("Invalid arguements");
+        return eprintln!("Invalid arguements, should receive path to board file.");
     }
 
     let mine_counter = match MineCounter::from_file(&args[1]) {
