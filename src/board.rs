@@ -38,16 +38,16 @@ impl Board {
         })
     }
 
-    /// Imprime por pantalla el tablero modificado
+    /// Imprime por pantalla el tablero modificado.
     pub fn display(&self) {
         print!("{}", self);
     }
-
-    /// Guarda en un archivo el tablero modificado
+    /// Guarda en un archivo el tablero modificado.
     pub fn to_file(&self, file_name: &str) -> io::Result<()> {
         fs::write(file_name, self.to_string())
     }
 
+    /// Verifica que el tablero sea valido y devuelve un error en caso contrario
     fn assert_is_valid_board(board: &[Vec<char>]) -> Result<(), InputError> {
         if board.is_empty() {
             return Err(InputError::EmptyBoard);
@@ -67,6 +67,7 @@ impl Board {
         Ok(())
     }
 
+    /// Convierte un String en un tablero, separando por caracteres y lineas.
     fn to_matrix(board: &str) -> Vec<Vec<char>> {
         let mut matrix: Vec<Vec<char>> = vec![];
         let lines = board.lines();
