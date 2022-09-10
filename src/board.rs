@@ -1,4 +1,4 @@
-//! Contiene el method object MineCounter.
+//! Contiene la logica para la importacion/exportacion del tablero y el conteo de minas
 
 pub mod input_error;
 
@@ -8,15 +8,13 @@ use std::{char, fmt, fs, io};
 const MINE: char = '*';
 const BLANK: char = '.';
 
-/// Cuenta las minas adyacentes a cada casilla vacia
-///  a partir de un tablero proveniente de un archivo
+/// Contiene el tablero de buscaminas
 pub struct Board {
     board: Vec<Vec<char>>,
     width: usize,
     height: usize,
 }
 
-/// Implementacion del tablero
 impl Board {
     /// Lee un tablero de un archivo y lo carga en un struct ```Board```
     ///
@@ -38,11 +36,12 @@ impl Board {
         })
     }
 
-    /// Imprime por pantalla el tablero modificado.
+    /// Imprime por pantalla el tablero.
     pub fn display(&self) {
         print!("{}", self);
     }
-    /// Guarda en un archivo el tablero modificado.
+
+    /// Guarda en un archivo el tablero.
     pub fn to_file(&self, file_name: &str) -> io::Result<()> {
         fs::write(file_name, self.to_string())
     }
@@ -67,7 +66,7 @@ impl Board {
         Ok(())
     }
 
-    /// Convierte un String en un tablero, separando por caracteres y lineas.
+    /// Convierte un String en una matriz de caracteres, separando por lineas.
     fn to_matrix(board: &str) -> Vec<Vec<char>> {
         let mut matrix: Vec<Vec<char>> = vec![];
         let lines = board.lines();
@@ -81,9 +80,8 @@ impl Board {
     }
 }
 
-/// Implementacion del conteo de minas
 impl Board {
-    /// Cuenta las minas adyacentes a cada celda vacia y modifica el tablero
+    /// Cuenta las minas adyacentes a cada celda vacia (modifica el tablero)
     pub fn count_mines(&mut self) {
         for y in 0..self.height {
             for x in 0..self.width {
@@ -116,14 +114,13 @@ impl Board {
     }
 
     /// Recibe un digito y lo convierte a un caracter.
-    /// Se espera que el digito siempre sea valido ```(0 <= digit <= 9)```
+    /// El digito siempre sera valido ```(0 <= digit <= 9)```
     fn digit_to_char(digit: u8) -> char {
-        char::from_digit(digit as u32, 10).expect("Should always be valid")
+        char::from_digit(digit as u32, 10).expect("Always valid")
     }
 }
 
 impl fmt::Display for Board {
-    /// Escribe el tablero en el ```Formatter``` indicado
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for row in self.board.iter() {
             for &char in row {
