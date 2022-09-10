@@ -1,1 +1,1 @@
-pub mod mine_counter;
+pub mod board;

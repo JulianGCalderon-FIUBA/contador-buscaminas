@@ -1,5 +1,5 @@
-mod mine_counter;
-use mine_counter::MineCounter;
+mod board;
+use board::Board;
 use std::env;
 
 fn main() {
@@ -8,13 +8,16 @@ fn main() {
         return eprintln!("Invalid arguements, should receive path to board file.");
     }
 
-    let mine_counter = match MineCounter::from_file(&args[1]) {
-        Ok(mine_counter) => mine_counter,
+    let mut board = match Board::from_file(&args[1]) {
+        Ok(board) => board,
         Err(err) => return eprintln!("Could not read board, with error: {:?}", err),
     };
 
-    mine_counter.display();
-    if let Err(err) = mine_counter.to_file("boards/exported.txt") {
+    board.display();
+    board.count_mines();
+    board.display();
+
+    if let Err(err) = board.to_file("boards/exported.txt") {
         eprintln!("Could not write board to file, with error: {:?}", err);
     };
 }
