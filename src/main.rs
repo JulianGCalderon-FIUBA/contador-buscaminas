@@ -13,8 +13,12 @@ fn main() {
         Err(err) => return eprintln!("Could not read board, with error: {:?}", err),
     };
 
+    println!("Original Board:");
     board.display();
+
     board.count_mines();
+
+    println!("Modified Board:");
     board.display();
 
     if let Err(err) = board.to_file("boards/exported.txt") {

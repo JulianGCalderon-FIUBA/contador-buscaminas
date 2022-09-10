@@ -56,7 +56,7 @@ impl Board {
         for row in board.iter() {
             for &char in row {
                 if char != MINE && char != BLANK {
-                    return Err(InputError::InvalidCharacter);
+                    return Err(InputError::InvalidCharacter(char));
                 }
             }
             if row.len() != board[0].len() {
@@ -188,7 +188,7 @@ mod tests {
         let board = vec![vec!['a', '.'], vec!['.', '*']];
         assert!(matches!(
             Board::assert_is_valid_board(&board),
-            Err(InputError::InvalidCharacter)
+            Err(InputError::InvalidCharacter('a'))
         ));
     }
 

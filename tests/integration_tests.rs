@@ -18,7 +18,10 @@ fn valid_board_counts_mines_correctly() {
 #[test]
 fn counting_mines_for_board_with_invalid_character_fails() {
     let mine_counter = Board::from_file("boards/invalid_character.txt");
-    assert!(matches!(mine_counter, Err(InputError::InvalidCharacter)));
+    assert!(matches!(
+        mine_counter,
+        Err(InputError::InvalidCharacter('A'))
+    ));
 }
 
 #[test]
