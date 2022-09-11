@@ -13,7 +13,7 @@ pub struct Board {
     height: usize,
 }
 
-/// Lectura/Escritura del tablero
+/// Importacion/Exportacion del tablero
 impl Board {
     /// Lee un tablero de un archivo y lo carga en un struct ```Board```
     ///
@@ -35,17 +35,17 @@ impl Board {
         })
     }
 
-    /// Imprime por pantalla el tablero.
+    /// Imprime el tablero a la salida estandar.
     pub fn display(&self) {
         print!("{}", self);
     }
 
-    /// Guarda en un archivo el tablero.
+    /// Guarda el tablero en un archivo. Devuelve error de IO en caso de fallar.
     pub fn to_file(&self, file_name: &str) -> io::Result<()> {
         fs::write(file_name, self.to_string())
     }
 
-    /// Verifica que el tablero sea valido y devuelve un error correspondiente en caso contrario
+    /// Verifica que el tablero sea valido y devuelve un error correspondiente en caso contrario.
     fn assert_is_valid_board(board: &[Vec<char>]) -> Result<(), InputError> {
         if board.is_empty() {
             return Err(InputError::EmptyBoard);
@@ -81,7 +81,7 @@ impl Board {
 
 /// Conteo de minas
 impl Board {
-    /// Cuenta las minas adyacentes a cada celda vacia (modifica el tablero)
+    /// Cuenta las minas adyacentes a cada celda vacia y actualiza el tablero
     pub fn count_mines(&mut self) {
         for y in 0..self.height {
             for x in 0..self.width {
@@ -113,8 +113,6 @@ impl Board {
         counter
     }
 
-    /// Recibe un digito y lo convierte a un caracter.
-    /// El digito siempre sera valido ```(0 <= digit <= 9)```
     fn digit_to_char(digit: u8) -> char {
         char::from_digit(digit as u32, 10).expect("Always valid")
     }

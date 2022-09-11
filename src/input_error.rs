@@ -1,8 +1,8 @@
-//! Informacion acerca de los errores de lectura del tablero
+//! Informacion acerca de los errores de importacion del tablero
 
 use std::fmt;
 
-/// Errores que pueden ocurrir al leer un tablero
+/// Errores que pueden ocurrir al importar un tablero
 pub enum InputError {
     /// El tablero contiene un caracter invalido. Almacena el primer caracter invalido encontrado.
     InvalidCharacter(char),
