@@ -1,4 +1,4 @@
-//! Contiene la logica para la importacion/exportacion del tablero y el conteo de minas
+//! Logica para la importacion/exportacion del tablero y el conteo de minas
 
 use crate::input_error::InputError;
 use std::{char, fmt, fs, io};
@@ -13,6 +13,7 @@ pub struct Board {
     height: usize,
 }
 
+/// Lectura/Escritura del tablero
 impl Board {
     /// Lee un tablero de un archivo y lo carga en un struct ```Board```
     ///
@@ -44,7 +45,7 @@ impl Board {
         fs::write(file_name, self.to_string())
     }
 
-    /// Verifica que el tablero sea valido y devuelve un error en caso contrario
+    /// Verifica que el tablero sea valido y devuelve un error correspondiente en caso contrario
     fn assert_is_valid_board(board: &[Vec<char>]) -> Result<(), InputError> {
         if board.is_empty() {
             return Err(InputError::EmptyBoard);
@@ -78,6 +79,7 @@ impl Board {
     }
 }
 
+/// Conteo de minas
 impl Board {
     /// Cuenta las minas adyacentes a cada celda vacia (modifica el tablero)
     pub fn count_mines(&mut self) {

@@ -1,18 +1,16 @@
-//! Este modulo contiene informacion acerca de los errores de lectura del tablero
+//! Informacion acerca de los errores de lectura del tablero
 
 use std::fmt;
 
 /// Errores que pueden ocurrir al leer un tablero
-///
-/// Las variaciones del InputError son:
-///  - InvalidCharacter: El tablero contiene un caracter invalido. Contiene el caracter invalido.
-///  - InvalidBoard: Las lineas del tablero no tienen la misma longitud.
-///  - InvalidFile: No se pudo leer el archivo indicado.
-///  - EmptyBoard: El archivo estaba vacio.
 pub enum InputError {
+    /// El tablero contiene un caracter invalido. Almacena el primer caracter invalido encontrado.
     InvalidCharacter(char),
+    /// Las lineas del tablero no tienen la misma longitud.
     InvalidBoard,
+    /// InvalidFile: No se pudo leer el archivo indicado.
     InvalidFile,
+    /// EmptyBoard: El archivo estaba vacio.
     EmptyBoard,
 }
 
