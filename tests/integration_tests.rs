@@ -1,5 +1,5 @@
-use buscaminas::board::input_error::InputError;
 use buscaminas::board::Board;
+use buscaminas::input_error::InputError;
 
 #[test]
 fn valid_board_displays_correctly() {

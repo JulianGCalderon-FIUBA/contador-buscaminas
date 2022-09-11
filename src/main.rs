@@ -1,5 +1,4 @@
-mod board;
-use board::Board;
+use buscaminas::board::Board;
 use std::env;
 
 fn main() {

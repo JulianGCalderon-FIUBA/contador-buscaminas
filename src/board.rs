@@ -1,8 +1,6 @@
 //! Contiene la logica para la importacion/exportacion del tablero y el conteo de minas
 
-pub mod input_error;
-
-use input_error::InputError;
+use crate::input_error::InputError;
 use std::{char, fmt, fs, io};
 
 const MINE: char = '*';
