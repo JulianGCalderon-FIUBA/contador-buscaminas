@@ -16,7 +16,7 @@ fn valid_board_counts_mines_correctly() {
 }
 
 #[test]
-fn counting_mines_for_board_with_invalid_character_fails() {
+fn loading_board_with_invalid_character_returns_corresponding_error() {
     let mine_counter = Board::from_file("boards/invalid_character.txt");
     assert!(matches!(
         mine_counter,
@@ -25,19 +25,19 @@ fn counting_mines_for_board_with_invalid_character_fails() {
 }
 
 #[test]
-fn counting_mines_for_board_with_invalid_board_fails() {
+fn loading_board_with_invalid_board_returns_corresponding_error() {
     let mine_counter = Board::from_file("boards/invalid_board.txt");
     assert!(matches!(mine_counter, Err(InputError::InvalidBoard)));
 }
 
 #[test]
-fn counting_mines_for_empty_board_fails() {
+fn loading_empty_board_returns_corresponding_error() {
     let mine_counter = Board::from_file("boards/empty_board.txt");
     assert!(matches!(mine_counter, Err(InputError::EmptyBoard)));
 }
 
 #[test]
-fn counting_mines_for_invalid_file_fails() {
+fn loading_board_from_unexistent_file_returns_corresponding_error() {
     let mine_counter = Board::from_file("NO/EXISTE.txt");
     assert!(matches!(mine_counter, Err(InputError::InvalidFile)));
 }

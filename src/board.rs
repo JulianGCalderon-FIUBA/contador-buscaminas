@@ -180,7 +180,7 @@ mod tests {
     }
 
     #[test]
-    fn assert_is_valid_with_invalid_character_returns_error() {
+    fn assert_is_valid_with_invalid_character_returns_corresponding_error() {
         let board = vec![vec!['a', '.'], vec!['.', '*']];
         assert!(matches!(
             Board::assert_is_valid_board(&board),
@@ -189,7 +189,7 @@ mod tests {
     }
 
     #[test]
-    fn assert_is_valid_with_invalid_board_returns_error() {
+    fn assert_is_valid_with_invalid_board_returns_corresponding_error() {
         let board = vec![vec!['*', '.', '.'], vec!['*', '.']];
         assert!(matches!(
             Board::assert_is_valid_board(&board),
@@ -198,7 +198,7 @@ mod tests {
     }
 
     #[test]
-    fn assert_is_valid_with_empty_board_returns_errror() {
+    fn assert_is_valid_with_empty_board_returns_corresponding_error() {
         let board = vec![];
         assert!(matches!(
             Board::assert_is_valid_board(&board),
@@ -207,7 +207,7 @@ mod tests {
     }
 
     #[test]
-    fn new_with_invalid_file_returns_error() {
+    fn new_with_invalid_file_returns_corresponding_error() {
         let board = Board::from_file("NO/EXISTE.txt");
         assert!(matches!(board, Err(InputError::InvalidFile)));
     }
