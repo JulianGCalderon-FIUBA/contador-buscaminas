@@ -8,9 +8,9 @@ pub enum InputError {
     InvalidCharacter(char),
     /// Las lineas del tablero no tienen la misma longitud.
     InvalidBoard,
-    /// InvalidFile: No se pudo leer el archivo indicado.
+    /// No se pudo leer el archivo indicado.
     InvalidFile,
-    /// EmptyBoard: El archivo estaba vacio.
+    /// El archivo estaba vacio.
     EmptyBoard,
 }
 
