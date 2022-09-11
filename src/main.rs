@@ -8,7 +8,9 @@ fn main() {
         return eprintln!("Invalid arguements, should receive path to board file.");
     }
 
-    let mut board = match Board::from_file(&args[1]) {
+    let file_name = &args[1];
+
+    let mut board = match Board::from_file(file_name) {
         Ok(board) => board,
         Err(err) => return eprintln!("Could not read board, with error: {:?}", err),
     };
