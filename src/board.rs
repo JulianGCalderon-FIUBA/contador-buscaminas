@@ -6,7 +6,7 @@ use std::{char, fmt, fs, io};
 const MINE: char = '*';
 const BLANK: char = '.';
 
-/// Contiene el tablero
+/// Almacena el tablero
 pub struct Board {
     board: Vec<Vec<char>>,
     width: usize,
