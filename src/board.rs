@@ -6,7 +6,7 @@ use std::{char, fmt, fs, io};
 const MINE: char = '*';
 const BLANK: char = '.';
 
-/// Almacena el tablero
+/// Almacena el tablero del buscaminas
 pub struct Board {
     board: Vec<Vec<char>>,
     width: usize,
@@ -46,6 +46,7 @@ impl Board {
     }
 
     /// Verifica que el tablero sea valido y devuelve un error correspondiente en caso contrario.
+    /// En caso de ser valido, no devuelve nada: ().
     fn assert_is_valid_board(board: &[Vec<char>]) -> Result<(), InputError> {
         if board.is_empty() {
             return Err(InputError::EmptyBoard);
@@ -66,12 +67,17 @@ impl Board {
     }
 
     /// Convierte un String en una matriz de caracteres, separando por lineas.
+    /// Los lineas se separan por bytes. Formando caracteres de u8.
     fn to_matrix(board: &str) -> Vec<Vec<char>> {
         let mut matrix: Vec<Vec<char>> = vec![];
         let lines = board.lines();
 
         for line in lines {
-            let chars: Vec<char> = line.chars().collect();
+            let chars: Vec<char> = line
+                .as_bytes()
+                .iter()
+                .map(|char_byte| *char_byte as char)
+                .collect();
             matrix.push(chars);
         }
 
@@ -81,21 +87,23 @@ impl Board {
 
 /// Conteo de minas
 impl Board {
-    /// Cuenta las minas adyacentes a cada celda vacia y actualiza el tablero
+    /// Cuenta las minas adyacentes a cada celda vacia y actualiza el tablero.
+    /// Las posiciones sin minas adyacentes no se modifican
     pub fn count_mines(&mut self) {
         for y in 0..self.height {
             for x in 0..self.width {
                 if self.board[y][x] == BLANK {
-                    let adyacent_bombs = self.adyacents_mines_to(y, x);
-                    if adyacent_bombs > 0 {
-                        self.board[y][x] = Self::digit_to_char(adyacent_bombs);
+                    let adyacent_mines = self.adyacents_mines_to(y, x);
+                    if adyacent_mines > 0 {
+                        self.board[y][x] = Self::digit_to_char(adyacent_mines);
                     }
                 }
             }
         }
     }
 
-    /// Devuelve la cantidad de bombas adyacentes a la posicion indicada
+    /// Devuelve la cantidad de bombas adyacentes a la posicion indicada.
+    /// Devuelve valores entre 0 y 8 inclusive.
     fn adyacents_mines_to(&self, y: usize, x: usize) -> u8 {
         let y_range = y.max(1) - 1..=y.min(self.height - 2) + 1;
         let x_range = x.max(1) - 1..=x.min(self.width - 2) + 1;
@@ -209,6 +217,6 @@ mod tests {
     #[test]
     fn new_with_invalid_file_returns_corresponding_error() {
         let board = Board::from_file("NO/EXISTE.txt");
-        assert!(matches!(board, Err(InputError::InvalidFile)));
+        assert!(matches!(board, Err(InputError::InvalidFile(_))));
     }
 }

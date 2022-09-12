@@ -39,5 +39,5 @@ fn loading_empty_board_returns_corresponding_error() {
 #[test]
 fn loading_board_from_unexistent_file_returns_corresponding_error() {
     let mine_counter = Board::from_file("NO/EXISTE.txt");
-    assert!(matches!(mine_counter, Err(InputError::InvalidFile)));
+    assert!(matches!(mine_counter, Err(InputError::InvalidFile(_))));
 }
